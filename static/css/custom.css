@@ -1,0 +1,8 @@
+.background {
+    background-image: url(../images/background.jpg);
+    background-size:cover;
+}
+
+h1.title {
+    padding: 0.5em;
+}

@@ -1,0 +1,124 @@
+{{left_sidebar_enabled=True}}
+{{right_sidebar_enabled=False}}
+{{extend 'layout.html'}}
+
+<div id="specimen_detail"
+         style="background-color: #f7f9fa; border-color: #74ae0b;
+                border-width: 1px; border-style: solid; padding: 0.5em;">
+      <div style="font-weight: bold">
+        <a href="browse/browse.zpt?group_id=${specimen/group_id}&family=${specimen/family}" title="Browse specimens of {{=rec.family}}">{{=rec.family or ''}}</a>
+      </div>
+
+      <div style="padding-bottom: 0.5em">
+        <a style="font-style: italic"
+           href="browse/browse.zpt?group_id=${specimen/group_id}&family=${specimen/family}&genus=${specimen/genus}"
+           title="Browse specimens of ${specimen/genus}">
+          {{=rec.genus or ''}}
+	</a>
+        <a style="font-style: italic"
+           href="browse/browse.zpt?group_id={{=rec.group_id}}&family={{=rec.family}}&genus={{=rec.genus}}&species_epithet={{=rec.species_epithet}}"
+	   title="Browse specimens of {{=rec.genus}} {{=rec.species_epithet}}">
+          {{=rec.species_epithet}}
+	</a>
+        <span>{{=rec.species_author_abbrev}}</span>
+        {{if rec.infra_rank:}}
+	  <span>{{=rec.infra_rank}}</span>
+	{{pass}}
+        <span style="font-style:italic">{{=rec.infra_epithet}}</span>
+        <span>{{=rec.infra_author_abbrev}}</span>
+        <div style="font-size:10pt;padding-top:0.75em">
+          Determined by: <span>{{=rec.determined_by}}</span>
+        </div>
+      </div>
+      <!-- <div> -->
+      <!--   <a href="{{#=rec.eflora_url}}" -->
+      <!--      title="Look up name in Flora of China">FOC</a> -->
+      <!-- </div> -->
+      <tr>
+
+      <div id="locality">
+        <input type="hidden" id="locality_id" value={{=rec.locality_id}}/>
+	<div>
+          <a href="/locality/{{=rec.locality_id}}">
+            <img title="Go to locality page" src="/static/marker_yellow.png"
+                 style="padding:0.5em" /></a>
+            <div style="padding:0.25em">
+              <span>{{=rec.place}}</span>. 
+              <span>{{=rec.locality}}</span>
+              <span>{{=rec.habitat}}</span>
+              {{=rec.latitude_degrees}}&deg;{{=rec.latitude_minutes}}'{{=rec.latitude_seconds}}&#34;{{=rec.north_south}},
+              {{=rec.longitude_degrees}}&deg;{{=rec.longitude_minutes}}'{{=rec.longitude_seconds}}&#34;{{=rec.east_west}}.
+              {{=rec.lower_elevation}}-{{=rec.upper_elevation}}&nbsp;m.
+            </div>
+        <input id="latitude" type="hidden" value="{{=rec.lat}}"/>
+        <input id="longitude" type="hidden" value="{{=rec.lng}}"/>
+        <input id="locality_href" type="hidden" value="{{=rec.locality_id}}"/>
+      </div>
+
+      <div>
+        <span>{{=rec.microhabitat}}</span>
+        <span>{{=rec.plant_description}}</span>
+      </div>
+      <div>
+          <div>{{=rec.collectors}}</div>
+          <div>{{=rec.collector_number}}</div>
+          <div>{{=rec.collection_date}}</div>
+          {{if rec.dna_collection:}}
+            <img src="/static/dna_small.png" title="DNA material available"/>
+            {{pass}}
+
+            <!-- <td align="right"> -->
+            <!--   <a tal:attributes="href python:here.portal_url()+'/images/image_add.zpt?assoc=S:%s&tag=%s&yr=%s&mo=%s&dy=%s' % (specimen['specimen_id'], specimen['tag'], specimen['yr'], specimen['mo'], specimen['dy'])" -->
+            <!--      tal:condition="python:user.has_role(['Member', 'Manager', 'Owner'])"> -->
+            <!--     [Add image] -->
+            <!--   </a> -->
+            <!--   &nbsp; -->
+            <!--   <a tal:attributes="href string:specimen_edit.zpt?specimen_id=${specimen/specimen_id}" -->
+            <!--      tal:condition="python:user.has_role([editor_roles[specimen['group_id']-1], 'Owner', 'Manager'])"> -->
+            <!--     [Edit record] -->
+            <!--   </a> -->
+            <!-- </td>  -->
+      </div>
+
+      <!-- <div id="photo_div" condition="specimen/numimages" style="padding: 0.5em; line-height: 100px; display: block"> -->
+      <!--   <tal:images repeat="image_id specimen/image_ids"> -->
+      <!--     <a tal:attributes="href python:'%s?specimen_id=%s&full_image=%s' % (request.URL, specimen['specimen_id'], image_id)"> -->
+      <!--       <img tal:attributes="src string:${here/IMGHOST}/zimage/thm/${image_id}.jpg" /> -->
+      <!--     </a> -->
+      <!--   </tal:images> -->
+      <!-- </div> -->
+    
+    <!--   <div tal:condition="python:specimen.get('full_image') or None" -->
+    <!--        id="full_image" -->
+    <!--        style="padding-top: 1em"> -->
+    <!--     <tal:def tal:define="full_image specimen/full_image"> -->
+    <!--       <img tal:attributes="src string:${here/IMGHOST}/zimage/std/${full_image/image_id}.jpg ; alt full_image/caption | mothing ; title full_image/caption | nothing" /> -->
+    <!--       <div tal:content="full_image/caption | nothing"> -->
+    <!--       </div> -->
+    <!--       <span tal:content="string:Copyright ${full_image/image_date/year} ${full_image/photographer}" -->
+    <!--             style="font-size:80%"></span> -->
+    <!--       &nbsp; -->
+    <!--       <span> -->
+    <!--         <a style="font-size:80%" -->
+    <!--            tal:attributes="href python:'%s/images/image_edit.zpt?image_id=%s' % (here.portal_url(), full_image.image_id)"> -->
+    <!--           [Edit image] -->
+    <!--         </a> -->
+    <!--         &nbsp; -->
+    <!--       </span> -->
+    <!--       <a style="font-size:80%" target="_" -->
+    <!--          tal:attributes="href string:${here/IMGHOST}/zimage/full/${full_image/image_id}.jpg"> -->
+    <!--         [View original in new window] -->
+    <!--       </a> -->
+
+    <!--     </tal:def> -->
+    <!--   </div> -->
+
+    <!--     <span style="font-size: 80%"> -->
+    <!--       <a id="center_view_a" href="" onclick="return false;" title="Center view on locality">[center]</a> -->
+    <!--     </span> -->
+    <!--     <br /> -->
+    <!--   <div style="padding: 0.5em"> -->
+    <!--     <div id="gmap" style="height: 400px; width: 600px"></div> -->
+    <!--   </div> -->
+    <!-- </div> -->
+</div>

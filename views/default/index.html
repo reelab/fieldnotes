@@ -1,0 +1,31 @@
+{{left_sidebar_enabled=True}}
+{{right_sidebar_enabled=False}}
+{{response.files.append(URL('static','js/typeahead.bundle.js'))}}
+{{extend 'layout.html'}}
+
+<div id="remote">
+  <input class="typeahead" type="text" placeholder="Search specimens">
+</div>
+
+<script>
+var specimensearch = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: {
+	url: 'autocomplete.json?s=%QUERY',
+	wildcard: '%QUERY'
+    }
+});
+ 
+$('#remote .typeahead').typeahead({
+    highlight: true,
+    minLength: 2,
+}, {
+    name: 'specimens',
+    display: 'value',
+    source: specimensearch
+});
+</script>
+
+{{block left_sidebar}}New Left Sidebar Content{{end}}
+{{block right_sidebar}}New Right Sidebar Content{{end}}
