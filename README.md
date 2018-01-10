@@ -1,4 +1,4 @@
-# fieldnotes-web
+# fieldnotes
 web2py re-implementation of hengduan.huh.harvard.edu/fieldnotes
 
 ## Set up development environment
