@@ -1,0 +1,18 @@
+{{extend 'layout.html'}}
+
+{{block breadcrumb}}
+  <li class="breadcrumb-item ml-2"><a href="{{=URL('default','index')}}">Home</a></li>
+  <li class="breadcrumb-item active">Expeditions</li>
+{{end}}
+
+{{block page_title}}
+  Expeditions
+{{end}}
+
+{{block page_subtitle}}
+  Fieldwork that generated the collections in the database
+{{end}}
+
+{{block page_content}}
+  {{=grid}}
+{{end}}

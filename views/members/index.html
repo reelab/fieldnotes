@@ -1,0 +1,56 @@
+{{extend 'layout.html'}}
+
+{{block stylesheets}}
+  <link rel="stylesheet" href="{{=URL('static','css/custom_home.css')}}"/>
+{{end}}
+
+{{block breadcrumb}}
+  <li class="breadcrumb-item ml-2"><a href="{{=URL('default','index')}}">Home</a></li>
+  <li class="breadcrumb-item active">Members</li>
+{{end}}
+
+{{block page_title}}
+  Search For Users
+{{end}}
+
+{{block page_subtitle}}
+  This search form enables you to find users by specifying one or more search criteria.
+{{end}}
+
+{{block page_content}}
+<form>
+  <div class="form-group">
+    <label class="mb-0">Name</label>
+    <small class="form-text text-muted">Return users with login names containing this value.</small>
+    <input type="email" class="form-control" placeholder="Enter name">
+  </div>
+
+  <div class="form-group">
+    <label class="mb-0">Email address</label>
+    <small class="form-text text-muted">Return users with email addresses containing this value.</small>
+    <input class="form-control" placeholder="Enter email">
+  </div>
+
+  <div class="form-group">
+    <label class="mb-0">Last logged in</label>
+    <small class="form-text text-muted">Return users who have logged in since yesterday, last week, etc. </small>
+    <select class="form-control">
+      <option>Ever</option>
+      <option>Yesterday</option>
+      <option>Last Week</option>
+      <option>Last Month</option>
+
+    </select>
+  </div>
+
+  <div class="form-group mb-2">
+    <div class="form-inline">
+      <input type="checkbox" class="form-check-input">
+      <label class="form-check-label">Not logged in since specified time</label>
+    </div>
+    <small class="form-text text-muted">Return users who have NOT logged in since the time specified above.</small>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
+{{end}}

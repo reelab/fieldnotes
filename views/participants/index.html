@@ -1,0 +1,19 @@
+{{extend 'layout.html'}}
+
+{{block breadcrumb}}
+  <li class="breadcrumb-item ml-2"><a href="{{=URL('default','index')}}">Home</a></li>
+  <li class="breadcrumb-item active">Participants</li>
+{{end}}
+
+{{block page_title}}
+  Participants
+{{end}}
+
+{{block page_subtitle}}
+  Members of collecting expeditions, participants in alphabetical order
+   (family name in upper case)
+{{end}}
+
+{{block page_content}}
+<p> Participants</p>
+{{end}}

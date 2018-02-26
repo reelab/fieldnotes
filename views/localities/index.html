@@ -1,0 +1,42 @@
+{{extend 'layout.html'}}
+
+{{block stylesheets}}
+  <link rel="stylesheet" href="{{=URL('static','css/custom_home.css')}}"/>
+{{end}}
+
+{{block breadcrumb}}
+  <li class="breadcrumb-item ml-2"><a href="{{=URL('default','index')}}">Home</a></li>
+  <li class="breadcrumb-item active">Localities</li>
+{{end}}
+
+{{block page_title}}
+  Find collecting localities
+{{end}}
+
+{{block page_subtitle}}
+  This search form enables you to find localities by specifying one or more search criteria.
+{{end}}
+
+{{block page_content}}
+<form>
+  <div class="form-group form-inline">
+    <label class="mr-1">Expedition (optional): </label>
+    <select class="form-control">
+      <option disabled selected hidden>Select expedition</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+    </select>
+  </div>
+  <div class="form-group form-inline">
+    <label class="mr-1">Province: </label>
+    <select class="form-control" placeholder="Enter name">
+      <option disabled selected hidden>Select province</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
+{{end}}

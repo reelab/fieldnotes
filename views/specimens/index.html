@@ -1,23 +1,26 @@
 {{extend 'layout.html'}}
 
-<h2 onclick="$('#search').slideToggle()">Search</h2>
-<div id="search">
-{{=form}}
-</div>
+{{block breadcrumb}}
+  <li class="breadcrumb-item ml-2"><a href="{{=URL('default','index')}}">Home</a></li>
+  <li class="breadcrumb-item active">Specimens</li>
+{{end}}
 
-<h2 id="results_hdr" style="display:none"
-    onclick="$('#results').slideToggle()">
-Results</h2>
-<div id="results" style="height:30em;overflow:auto;"></div>
+{{block page_content}}
+  <h2>Search</h2>
+  <div id="search">
+  {{=form}}
+  </div>
 
-<h2 id="record_hdr" style="display:none" onclick="$('#record').slideToggle()">Record</h2>
-<div id="record"></div>
+  <h2>
+  Results</h2>
+{{end}}
 
+{{block extra_scripts}}
 <script>
 var form = $('#searchform');
 form.submit(function() {
   var qs = form.serialize();
-  $('#results').load(form.attr('action') + '?' + qs);
+  //$('#results').load(form.attr('action') + '?' + qs);
   $('#search').hide('slow');
   $('#results').show('slow');
   $('#results_hdr').show('slow');
@@ -35,3 +38,4 @@ function load_record(i) {
   });
 }
 </script>
+{{end}}

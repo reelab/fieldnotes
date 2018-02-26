@@ -1,0 +1,49 @@
+/* the following html and body styles allow body scroll to be disabled so that
+the sidebar and content divs are independently scrollable and header is fixed */
+html, body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+.header_style {
+  background-image: url(../images/background.jpg);
+  background-size:cover;
+}
+.breadcrumb {
+    padding: 0;
+    background-color: #FFDAB9;
+    border-radius: 4px; /* makes circular border*/
+}
+.breadcrumb-item+.breadcrumb-item::before {
+  content: "››";
+}
+.breadcrumb_label {
+  color: #9932CC; /* defines labeling text's colour on far-left*/
+}
+.sidebar_plus_content {
+  /*overflow: hidden; */
+  display: flex;
+  /*important for independent scrolling height: 100vh removing height make sticky / js script fail*/
+  height: 100vh;
+}
+.scrollable {
+  overflow: auto;
+  height: 100vh;
+  padding: 0.5%;
+}
+.sidebar {
+  background-color: #fee;
+  height: 98vh;
+  position:sticky;
+  bottom:0;
+  overflow: auto;
+  padding: 0.5%;
+}
+.page_content {
+  padding: 0.5%;
+  background-color: #D8BFD8;
+}
+.icon_style {
+  color:#b76e79;
+}

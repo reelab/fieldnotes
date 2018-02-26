@@ -1,0 +1,18 @@
+{{extend 'layout.html'}}
+
+{{block breadcrumb}}
+  <li class="breadcrumb-item ml-2"><a href="{{=URL('default','index')}}">Home</a></li>
+  <li class="breadcrumb-item active">Images</li>
+{{end}}
+
+{{block page_title}}
+  Specimen and locality images uploaded by members (most recent first)
+{{end}}
+
+{{block page_subtitle}}
+  To view image galleries of specific taxa, <a href="#">browse</a> the database
+{{end}}
+
+{{block page_content}}
+  <p> Images</p>
+{{end}}

@@ -47,7 +47,7 @@ def search():
         [ (str(x), (str(x).split(".")[1]).capitalize().replace("_", " "))
           for x in fields ]
         )
-    results = SQLTABLE2(rows, headers=headers)
+    results = SQLTABLE(rows, headers=headers)
     return dict(results=results)
 
 def load_record():
@@ -72,4 +72,3 @@ def distinct_species():
                         orderby=db.specimen.species)
     return dict(results=[ dict(id=i, label=r.species, value=r.species)
                           for i, r in enumerate(rows) if r.species ])
-

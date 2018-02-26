@@ -1,31 +1,41 @@
-{{left_sidebar_enabled=True}}
-{{right_sidebar_enabled=False}}
-{{response.files.append(URL('static','js/typeahead.bundle.js'))}}
 {{extend 'layout.html'}}
 
-<div id="remote">
-  <input class="typeahead" type="text" placeholder="Search specimens">
-</div>
+{{block stylesheets}}
+  <link rel="stylesheet" href="{{=URL('static','css/custom_home.css')}}"/>
+{{end}}
 
-<script>
-var specimensearch = new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-    queryTokenizer: Bloodhound.tokenizers.whitespace,
-    remote: {
-	url: 'autocomplete.json?s=%QUERY',
-	wildcard: '%QUERY'
-    }
-});
- 
-$('#remote .typeahead').typeahead({
-    highlight: true,
-    minLength: 2,
-}, {
-    name: 'specimens',
-    display: 'value',
-    source: specimensearch
-});
-</script>
+{{block breadcrumb}}
+  <li class="breadcrumb-item active ml-2">Home</li>
+{{end}}
 
-{{block left_sidebar}}New Left Sidebar Content{{end}}
-{{block right_sidebar}}New Right Sidebar Content{{end}}
+{{block page_title}}
+  Plants and Fungi of South-Central China
+{{end}}
+
+{{block page_subtitle}}
+  A biodiversity portal for the Sino-Himalayan region
+{{end}}
+
+{{block page_content}}
+  <div class="main_text clearfix"> <!-- clearfix allows following div to position beneath this div despite image float -->
+    <img src="/fieldnotes/static/images/chinamap.jpg" class="img-thumbnail float-right chinamap mb-1" alt="China Map">
+    <p> The mountains of south-central China are widely regarded as a global biodiversity hotspot.
+      This site documents primary data about plants and fungi from the Hengduan Mountains and adjacent areas of south-central China,
+      including the Gaoligong Mountains and Tibetan Himalaya. Our database emphasizes <a href="#">specimens</a>
+       and <a href="{{=URL('localities','index')}}">place names</a>.
+    </p>
+    <ul>
+      <li><a href="#">Browse</a> or <a href="#">search</a> for specimens</li>
+      <li><a href="#">Search the multilingual gazetteer</a> for georeferenced place names (Pinyin, Wade-Giles, Chinese, Tibetan).
+        <a href="#"> Learn more about the gazetteer...</a></li>
+      <li>Navigate the <a href="#">collecting localities in Google Earth</a></li>
+    </ul>
+  </div>
+
+  <div class="d-flex NSF_footer">
+    <img src="/fieldnotes/static/images/nsflogo.gif" alt="NSF logo">
+    <p> The Biodiversity of the Hengduan Mountains project has been supported by the National Science Foundation through awards
+      DEB-9705795 and DEB-0321846. Any opinions, findings, and conclusions or recommendations expressed in this material are those of
+      the author(s) and do not necessarily reflect the views of the National Science Foundation.</p>
+  </div>
+{{end}}
