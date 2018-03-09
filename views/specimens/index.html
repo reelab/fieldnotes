@@ -1,5 +1,9 @@
 {{extend 'layout.html'}}
 
+{{block stylesheets}}
+  <link rel="stylesheet" href="{{=URL('static','css/custom_specimens.css')}}"/>
+{{end}}
+
 {{block breadcrumb}}
   <li class="breadcrumb-item ml-2"><a href="{{=URL('default','index')}}">Home</a></li>
   <li class="breadcrumb-item active">Specimens</li>
@@ -7,25 +11,37 @@
 
 {{block page_content}}
   <h2>Search</h2>
-  <div id="search">
-  {{=form}}
+  <h5 id="change_criteria" class="hide_from_view">Click to change search criteria</h5>
+  <div id="search" class="show_in_view">
+    {{if not form.accepted:}}
+    {{=form}}
+    {{pass}}
   </div>
 
-  <h2>
-  Results</h2>
+  {{if form.accepted:}}
+    <h2 id="results_header">Results</h2>
+    <div id="results">
+      {{=results}}
+    </div>
+  {{pass}}
+
 {{end}}
 
 {{block extra_scripts}}
 <script>
-var form = $('#searchform');
-form.submit(function() {
-  var qs = form.serialize();
+//var form = $('#searchform');
+//form.submit(function() {
+  //var qs = form.serialize();
   //$('#results').load(form.attr('action') + '?' + qs);
-  $('#search').hide('slow');
-  $('#results').show('slow');
-  $('#results_hdr').show('slow');
-  return false;
-})
+  //$('#search').hide('slow');
+  //$('#results').show('slow');
+  //$('#results_hdr').show('slow');
+  //return true;
+//})
+function showHide() {
+  //$('#search').hide('slow');
+  //$('.hide_from_view').removeClass('hide_from_view').addClass('show_in_view');
+}
 
 function load_record(i) {
   $('#search').hide('slow');

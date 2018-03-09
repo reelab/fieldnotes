@@ -6,25 +6,42 @@ response.title = SPAN(
 
 
 def index():
-    response.subtitle = A("Specimens", _href="specimen")
-
     family = Field("family", "string", required=False)
     genus = Field("genus", "string", required=False)
     species = Field("species_epithet", "string", required=False)
     collector_number = Field("collector_number", "string", required=False)
 
-    ## t = db.specimen
-    ## ac = ACWidget(t.family)
-    ## family.widget = ac.widget
-    ## ac = ACWidget(t.genus)
-    ## genus.widget = ac.widget
-
-    action = URL('search.load')
+    ##action = URL('search.load')
     form = SQLFORM.factory(
         family, genus, species, collector_number,
-        _id="searchform", _action=action
-        )
-    return dict(form=form)
+        _id="searchform")
+    results = None
+
+    if form.process(keepvalues=True).accepted:
+        response.flash = 'form accepted'
+        t = db.specimen
+        q = (t.id>0)
+        if request.vars:
+            for k, v in [ (k, v) for k, v in request.vars.items()
+                          if (k in t.fields) ]:
+                if v:
+                    q &= (t[k].like("%"+v+"%"))
+
+        fields = (t.specimen_id, t.family, t.genus,
+                  t.species_epithet, t.collector_number)
+        rows = db(q).select(*fields)
+        headers = dict(
+            [ (str(x), (str(x).split(".")[1]).capitalize().replace("_", " "))
+              for x in fields ]
+            )
+        results = SQLTABLE(rows, headers=headers)
+
+        ##response.js =  "$('#results').removeClass('hide_from_view')"
+        ##response.js =  'jQuery("#%s").show("slow");' % "results"
+
+
+
+    return dict(form=form, results=results)
 
 def view():
     t = db.fullspecimen
@@ -48,6 +65,7 @@ def search():
           for x in fields ]
         )
     results = SQLTABLE(rows, headers=headers)
+
     return dict(results=results)
 
 def load_record():
