@@ -1,124 +1,220 @@
 {{extend 'layout.html'}}
 
-{{block page_content}}
-  <div id="specimen_detail"
-           style="background-color: #f7f9fa; border-color: #74ae0b;
-                  border-width: 1px; border-style: solid; padding: 0.5em;">
-        <div style="font-weight: bold">
-          <a href="browse/browse.zpt?group_id=${specimen/group_id}&family=${specimen/family}" title="Browse specimens of {{=rec.family}}">{{=rec.family or ''}}</a>
-        </div>
+{{block stylesheets}}
+  <link rel="stylesheet" href="{{=URL('static','css/custom_specimens_view.css')}}"/>
+{{end}}
 
-        <div style="padding-bottom: 0.5em">
-          <a style="font-style: italic"
-             href="browse/browse.zpt?group_id=${specimen/group_id}&family=${specimen/family}&genus=${specimen/genus}"
-             title="Browse specimens of ${specimen/genus}">
-            {{=rec.genus or ''}}
-  	</a>
-          <a style="font-style: italic"
-             href="browse/browse.zpt?group_id={{=rec.group_id}}&family={{=rec.family}}&genus={{=rec.genus}}&species_epithet={{=rec.species_epithet}}"
-  	   title="Browse specimens of {{=rec.genus}} {{=rec.species_epithet}}">
-            {{=rec.species_epithet}}
-  	</a>
-          <span>{{=rec.species_author_abbrev}}</span>
-          {{if rec.infra_rank:}}
-  	  <span>{{=rec.infra_rank}}</span>
-  	{{pass}}
-          <span style="font-style:italic">{{=rec.infra_epithet}}</span>
-          <span>{{=rec.infra_author_abbrev}}</span>
-          <div style="font-size:10pt;padding-top:0.75em">
-            Determined by: <span>{{=rec.determined_by}}</span>
+{{block breadcrumb}}
+  <li class="breadcrumb-item ml-2"><a href="{{=URL('default','index')}}">Home</a></li>
+  <li class="breadcrumb-item active"><a href="{{=URL('specimens','index')}}">Specimens</a></li>
+  <li class="breadcrumb-item active">{{=rec.id}}<span class="genus_epi_italic"> {{=rec.genus or ''}} {{=rec.species_epithet or ''}}</span></li>
+{{end}}
+
+{{block page_title}}
+  <a id="family" href="browse/browse.zpt?group_id=${specimen/group_id}&family=${specimen/family}"
+    title="Browse specimens of {{=rec.family}}">
+    {{=rec.family or ''}}
+  </a>
+{{end}}
+
+{{block page_subtitle}}
+  <a class="genus_epi_italic"
+    href="browse/browse.zpt?group_id=${specimen/group_id}&family=${specimen/family}&genus=${specimen/genus}"
+    title="Browse specimens of {{=rec.genus}}">
+    {{=rec.genus or ''}}
+  </a>
+  <a class="genus_epi_italic"
+    href="browse/browse.zpt?group_id={{=rec.group_id}}&family={{=rec.family}}&genus={{=rec.genus}}&species_epithet={{=rec.species_epithet}}"
+    title="Browse specimens of {{=rec.genus}} {{=rec.species_epithet}}">
+    {{=rec.species_epithet or ''}}
+  </a>
+{{end}}
+
+{{block page_content}}
+  <div id="tabs_container" class="container">
+    <ul class="nav nav-tabs">
+      <li class="nav-item active">
+        <a data-toggle="tab" class="nav-link active" href="#details_tab">Details</a>
+      </li>
+      {{if images_count > 0:}}
+        <li class="nav-item">
+          <a data-toggle="tab" class="nav-link" href="#images_tab">Images</a>
+        </li>
+      {{pass}}
+      <li class="nav-item">
+        <a data-toggle="tab" class="nav-link" href="#map_tab">Map</a>
+      </li>
+    </ul>
+
+    <div class="tab-content clearfix">
+      <div id="details_tab" class="tab-pane fade show active">
+
+        <div id="author_details" class="clearfix">
+          <a class="float-right" href="/locality/{{=rec.locality_id}}">
+            <i class="fas fa-map-marker-alt text-success locality_dna_icon"></i> View Locality Page
+          </a>
+          <div id="infra_rank_author">
+            <span class="spec_attributes">Author: </span><span>{{=rec.species_author_abbrev or 'Not available'}} </span><br>
+            {{if rec.infra_rank:}}
+              <span class="spec_attributes">Infra-rank: </span><span>{{=rec.infra_rank}} </span><br>
+            {{pass}}
+            {{if rec.infra_epithet:}}
+              <span class="spec_attributes genus_epi_italic">Infra-epithet: </span><span>{{=rec.infra_epithet}} </span><br>
+            {{pass}}
+            {{if rec.infra_author_abbrev:}}
+              <span class="spec_attributes">Infra-author: </span><span>{{=rec.infra_author_abbrev}} </span><br>
+            {{pass}}
+            <span class="determined_by spec_attributes">Determined by: </span><span>{{=rec.determined_by or 'Not available'}} </span>
           </div>
         </div>
-        <!-- <div> -->
-        <!--   <a href="{{#=rec.eflora_url}}" -->
-        <!--      title="Look up name in Flora of China">FOC</a> -->
-        <!-- </div> -->
-        <tr>
 
-        <div id="locality">
-          <input type="hidden" id="locality_id" value={{=rec.locality_id}}/>
-  	<div>
-            <a href="/locality/{{=rec.locality_id}}">
-              <img title="Go to locality page" src="/static/marker_yellow.png"
-                   style="padding:0.5em" /></a>
-              <div style="padding:0.25em">
-                <span>{{=rec.place}}</span>.
-                <span>{{=rec.locality}}</span>
-                <span>{{=rec.habitat}}</span>
-                {{=rec.latitude_degrees}}&deg;{{=rec.latitude_minutes}}'{{=rec.latitude_seconds}}&#34;{{=rec.north_south}},
-                {{=rec.longitude_degrees}}&deg;{{=rec.longitude_minutes}}'{{=rec.longitude_seconds}}&#34;{{=rec.east_west}}.
-                {{=rec.lower_elevation}}-{{=rec.upper_elevation}}&nbsp;m.
-              </div>
-          <input id="latitude" type="hidden" value="{{=rec.lat}}"/>
-          <input id="longitude" type="hidden" value="{{=rec.lng}}"/>
-          <input id="locality_href" type="hidden" value="{{=rec.locality_id}}"/>
+        <div id="locality_details" class="align-middle">
+          <div class="d-flex">
+            <div class="col-auto spec_attributes odd_spec">Region</div>
+            <div class="col odd_val">{{=rec.place or 'Not available'}}</div>
+          </div>
+          <div class="d-flex">
+            <div class="col-auto spec_attributes even_spec">Locality</div>
+            <div class="col even_val">{{=rec.locality or 'Not available'}}</div>
+          </div>
+          <div class="d-flex">
+            <div class="col-auto spec_attributes odd_spec">Habitat</div>
+            <div class="col odd_val">{{=rec.habitat or 'Not available'}}</div>
+          </div>
+          <div class="d-flex">
+            <div class="col-auto spec_attributes even_spec">Micro-habitat</div>
+            <div class="col even_val">{{=rec.microhabitat or 'Not available'}}</div>
+          </div>
+          <div class="d-flex">
+            <div class="col-auto spec_attributes odd_spec">Coordinates</div>
+            <div class="col odd_val">{{=rec.latitude_degrees}}&deg;{{=rec.latitude_minutes}}'{{=rec.latitude_seconds}}&#34;{{=rec.north_south}},
+              {{=rec.longitude_degrees}}&deg;{{=rec.longitude_minutes}}'{{=rec.longitude_seconds}}&#34;{{=rec.east_west}}.</div>
+          </div>
+          <div class="d-flex">
+            <div class="col-auto spec_attributes even_spec">Elevation</div>
+            <div class="col even_val">{{=rec.lower_elevation}}-{{=rec.upper_elevation}}&nbsp;m.</div>
+          </div>
+          <div class="d-flex">
+            <div class="col-auto spec_attributes odd_spec">Description</div>
+            <div class="col odd_val">{{=rec.plant_description or 'Not available'}}</div>
+          </div>
+          <div class="d-flex">
+            <div class="col-auto spec_attributes even_spec">Collectors</div>
+            <div class="col even_val">{{=rec.collectors or 'Not available'}}</div>
+          </div>
+          <div class="d-flex">
+            <div class="col-auto spec_attributes odd_spec">Collector Number</div>
+            <div class="col odd_val">{{=rec.collector_number or 'Not available'}}</div>
+            <div class="col-auto spec_attributes odd_spec">Collection Date</div>
+            <div class="col odd_val">{{=rec.collection_date or 'Not available'}}</div>
+          </div>
+          {{if rec.dna_collection:}}
+            <i class="fas fa-dna locality_dna_icon mt-1 text-success"></i> DNA material available
+          {{else:}}
+            <i class="fas fa-dna locality_dna_icon mt-1 text-danger"></i>
+            <span> DNA material NOT available </span>
+          {{pass}}
+          {{if images_count > 0:}}
+            <i class="fas fa-camera-retro locality_dna_icon mt-1 text-success"></i>
+            <span> Photographs available </span>
+          {{else:}}
+            <i class="fas fa-camera-retro locality_dna_icon mt-1 text-danger"></i>
+            <span> Photographs NOT available </span>
+          {{pass}}
         </div>
+      </div> <!--end of details_tab-->
+      {{if images_count > 0:}}
+        <div id="images_tab" class="tab-pane fade d-flex justify-content-around mt-2 text-center">
+          {{image_counter = 0}}
+          {{for item in images_info:}}
+            <div class="col-auto" data-toggle="modal" data-target="#CarouselModal">
+              <a href="#carouselspecimen" data-slide-to="{{=image_counter}}">
+                <img class="img-thumbnail" src="http://107.0.125.182/zimage/thm/{{=item.image_id}}.jpg">
+                {{image_counter = image_counter + 1}}
+                <br>{{=image_counter}}
+              </a>
+            </div>
+          {{pass}}
 
-        <div>
-          <span>{{=rec.microhabitat}}</span>
-          <span>{{=rec.plant_description}}</span>
+          <div class="modal fade" id="CarouselModal">  <!--begin modal window-->
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <div class="pull-left">{{=rec.genus or ''}} {{=rec.species_epithet or ''}} Gallery</div>
+                  <button type="button" class="close" data-dismiss="modal" title="Close">
+                    <i class="fas fa-window-close menu_icon"></i>
+                  </button>
+                </div> <!--end of modal header-->
+                <div class="modal-body">
+
+                  <div id="carouselspecimen" class="carousel slide" data-interval="false" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                      {{for counter in range(0, images_count):}}
+                        <li data-target="#carouselspecimen" data-slide-to="{{=counter}}" class="{{if counter==0:}}active{{pass}}"></li>
+                      {{pass}}
+                    </ol>
+
+                    <div class="carousel-inner">
+                      {{image_counter = 0}}
+                      {{for item in images_info:}}
+                        <div class="carousel-item text-center {{if image_counter==0:}}active{{pass}}">
+                          {{image_counter = image_counter + 1}}
+                          <img class="img-fluid rounded" src="http://107.0.125.182/zimage/full/{{=item.image_id}}.jpg" alt="image {{=image_counter}}">
+                          <div class="carousel-caption">
+                            <p>{{=item.caption or ''}}</p>
+                            <p>Photographer: {{=item.photographer or 'Not available'}} || Date: {{=item.image_date or 'Not available'}}</p>
+                          </div>
+                        </div>
+                      {{pass}}
+                    </div>
+
+                    <a class="carousel-control-prev" href="#carouselspecimen" role="button" data-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselspecimen" role="button" data-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </div>
+                </div><!--end modal-body-->
+                <div class="modal-footer align-content-right">
+                  <button class="btn close" type="button" data-dismiss="modal">Close</button>
+                </div><!--end modal-footer-->
+              </div><!--end modal-content-->
+            </div><!--end modal-dialoge-->
+          </div><!--end Modal-->
         </div>
-        <div>
-            <div>{{=rec.collectors}}</div>
-            <div>{{=rec.collector_number}}</div>
-            <div>{{=rec.collection_date}}</div>
-            {{if rec.dna_collection:}}
-              <img src="/static/dna_small.png" title="DNA material available"/>
-              {{pass}}
+      {{pass}}
+     <div id="map_tab" class="mx-auto tab-pane fade"></div>
+    </div> <!--end of tab-content div-->
+  </div> <!--end of tabs_container div-->
+{{end}}
 
-              <!-- <td align="right"> -->
-              <!--   <a tal:attributes="href python:here.portal_url()+'/images/image_add.zpt?assoc=S:%s&tag=%s&yr=%s&mo=%s&dy=%s' % (specimen['specimen_id'], specimen['tag'], specimen['yr'], specimen['mo'], specimen['dy'])" -->
-              <!--      tal:condition="python:user.has_role(['Member', 'Manager', 'Owner'])"> -->
-              <!--     [Add image] -->
-              <!--   </a> -->
-              <!--   &nbsp; -->
-              <!--   <a tal:attributes="href string:specimen_edit.zpt?specimen_id=${specimen/specimen_id}" -->
-              <!--      tal:condition="python:user.has_role([editor_roles[specimen['group_id']-1], 'Owner', 'Manager'])"> -->
-              <!--     [Edit record] -->
-              <!--   </a> -->
-              <!-- </td>  -->
-        </div>
+{{block extra_scripts}}
+  <script>
+    function initMap() {
+      var lat_min = {{=rec.latitude_minutes}} / 60;
+      var lat_sec = {{=rec.latitude_seconds}} / 3600;
+      var lng_min = {{=rec.longitude_minutes}} / 60;
+      var lng_sec = {{=rec.longitude_seconds}} / 3600;
 
-        <!-- <div id="photo_div" condition="specimen/numimages" style="padding: 0.5em; line-height: 100px; display: block"> -->
-        <!--   <tal:images repeat="image_id specimen/image_ids"> -->
-        <!--     <a tal:attributes="href python:'%s?specimen_id=%s&full_image=%s' % (request.URL, specimen['specimen_id'], image_id)"> -->
-        <!--       <img tal:attributes="src string:${here/IMGHOST}/zimage/thm/${image_id}.jpg" /> -->
-        <!--     </a> -->
-        <!--   </tal:images> -->
-        <!-- </div> -->
-
-      <!--   <div tal:condition="python:specimen.get('full_image') or None" -->
-      <!--        id="full_image" -->
-      <!--        style="padding-top: 1em"> -->
-      <!--     <tal:def tal:define="full_image specimen/full_image"> -->
-      <!--       <img tal:attributes="src string:${here/IMGHOST}/zimage/std/${full_image/image_id}.jpg ; alt full_image/caption | mothing ; title full_image/caption | nothing" /> -->
-      <!--       <div tal:content="full_image/caption | nothing"> -->
-      <!--       </div> -->
-      <!--       <span tal:content="string:Copyright ${full_image/image_date/year} ${full_image/photographer}" -->
-      <!--             style="font-size:80%"></span> -->
-      <!--       &nbsp; -->
-      <!--       <span> -->
-      <!--         <a style="font-size:80%" -->
-      <!--            tal:attributes="href python:'%s/images/image_edit.zpt?image_id=%s' % (here.portal_url(), full_image.image_id)"> -->
-      <!--           [Edit image] -->
-      <!--         </a> -->
-      <!--         &nbsp; -->
-      <!--       </span> -->
-      <!--       <a style="font-size:80%" target="_" -->
-      <!--          tal:attributes="href string:${here/IMGHOST}/zimage/full/${full_image/image_id}.jpg"> -->
-      <!--         [View original in new window] -->
-      <!--       </a> -->
-
-      <!--     </tal:def> -->
-      <!--   </div> -->
-
-      <!--     <span style="font-size: 80%"> -->
-      <!--       <a id="center_view_a" href="" onclick="return false;" title="Center view on locality">[center]</a> -->
-      <!--     </span> -->
-      <!--     <br /> -->
-      <!--   <div style="padding: 0.5em"> -->
-      <!--     <div id="gmap" style="height: 400px; width: 600px"></div> -->
-      <!--   </div> -->
-      <!-- </div> -->
-  </div>
+      var lat_spec = {{=rec.latitude_degrees}} + lat_min + lat_sec;
+      var lng_spec = {{=rec.longitude_degrees}} + lng_min + lng_sec;
+      {{if rec.north_south=='S':}}lat_spec = -1 * lat_spec;{{pass}}
+      {{if rec.east_west=='W':}}lng_spec = -1 * lat_spec;{{pass}}
+      var spec_coord = {lat: lat_spec, lng: lng_spec};
+      var map = new google.maps.Map(document.getElementById('spec_map_tab'), {
+        zoom: 8,
+        center: spec_coord,
+        mapTypeId: 'hybrid', // enables satellite + place names
+      });
+      var marker = new google.maps.Marker({
+        position: spec_coord,
+        map: map
+      });
+    }
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_CQeaSCEOr_9JsVDYOijLvP-6mvFg_-A&callback=initMap">
+  </script>
 {{end}}

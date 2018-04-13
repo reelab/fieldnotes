@@ -18,25 +18,7 @@
 {{end}}
 
 {{block page_content}}
-<form>
-  <div class="form-group form-inline">
-    <label class="mr-1">Expedition (optional): </label>
-    <select class="form-control">
-      <option disabled selected hidden>Select expedition</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-    </select>
-  </div>
-  <div class="form-group form-inline">
-    <label class="mr-1">Province: </label>
-    <select class="form-control" placeholder="Enter name">
-      <option disabled selected hidden>Select province</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-    </select>
-  </div>
-  <button type="submit" class="btn btn-primary">Search</button>
-</form>
+  {{=grid}}
+
+
 {{end}}

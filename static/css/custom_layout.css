@@ -1,19 +1,46 @@
-/* the following html and body styles allow body scroll to be disabled so that
-the sidebar and content divs are independently scrollable and header is fixed */
 html, body {
-  padding: 0;
-  margin: 0;
   height: 100%;
 }
-
-.header_style {
+body {
+  overflow: hidden;
+  margin: 0;
+  display: flex;
+}
+.columns {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.scrollable {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+.sidebar_logo {
+  flex-shrink: 0;
+}
+.logo {
+  flex-shrink: 0;
+  background-color: #66CDAA;
+  padding: 20px;
+}
+.sidebar {
+  background-color: #E6E6FA;
+  padding: 2%;
+}
+.menu_icon {
+  color:#b44239;
+}
+.collapse_icon {
+  color:#808000;
+}
+header {
   background-image: url(../images/background.jpg);
   background-size:cover;
 }
 .breadcrumb {
-    padding: 0;
-    background-color: #FFDAB9;
-    border-radius: 4px; /* makes circular border*/
+  padding: 0;
+  background-color: #FFDAB9;
+  border-radius: 4px; /* makes circular border*/
 }
 .breadcrumb-item+.breadcrumb-item::before {
   content: "››";
@@ -21,29 +48,26 @@ html, body {
 .breadcrumb_label {
   color: #9932CC; /* defines labeling text's colour on far-left*/
 }
-.sidebar_plus_content {
-  /*overflow: hidden; */
-  display: flex;
-  /*important for independent scrolling height: 100vh removing height make sticky / js script fail*/
-  height: 100vh;
-}
-.scrollable {
-  overflow: auto;
-  height: 100vh;
-  padding: 0.5%;
-}
-.sidebar {
-  background-color: #fee;
-  height: 98vh;
-  position:sticky;
-  bottom:0;
-  overflow: auto;
-  padding: 0.5%;
-}
-.page_content {
-  padding: 0.5%;
+.content {
   background-color: #D8BFD8;
+  padding: 2%;
 }
-.icon_style {
-  color:#b76e79;
+.content_title {
+  color: #008080;
+}
+.content_subtitle {
+  color: #5F9EA0;
+}
+
+/* following three styles are reclassed from bootstrap carousel*/
+.carousel-indicators li {
+  background-color: #66CDAA;
+  border:1px solid #444;
+}
+.carousel-indicators .active {
+  background-color: #E6E6FA;
+  border:1px solid #444;
+}
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  background-color: #bada55;
 }

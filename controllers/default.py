@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 #########################################################################
 ## This is a samples controller
@@ -22,9 +22,7 @@ def index():
     """
     ## response.flash = T('You are successfully running web2py.')
 
-    grid = SQLFORM.smartgrid(db.locality)
-
-    return dict(grid=grid)
+    return dict()
 
 def autocomplete():
     s = request.vars.s or ''
@@ -44,7 +42,7 @@ def autocomplete():
 def user():
     """
     exposes:
-    http://..../[app]/default/user/login 
+    http://..../[app]/default/user/login
     http://..../[app]/default/user/logout
     http://..../[app]/default/user/register
     http://..../[app]/default/user/profile
@@ -75,5 +73,3 @@ def call():
     """
     session.forget()
     return service()
-
-

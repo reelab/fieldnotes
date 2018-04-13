@@ -9,49 +9,18 @@
   <li class="breadcrumb-item active">Specimens</li>
 {{end}}
 
-{{block page_content}}
-  <h2>Search</h2>
-  <h5 id="change_criteria" class="hide_from_view">Click to change search criteria</h5>
-  <div id="search" class="show_in_view">
-    {{if not form.accepted:}}
-    {{=form}}
-    {{pass}}
-  </div>
-
-  {{if form.accepted:}}
-    <h2 id="results_header">Results</h2>
-    <div id="results">
-      {{=results}}
-    </div>
-  {{pass}}
-
+{{block page_title}}
+  Specimens
 {{end}}
 
-{{block extra_scripts}}
-<script>
-//var form = $('#searchform');
-//form.submit(function() {
-  //var qs = form.serialize();
-  //$('#results').load(form.attr('action') + '?' + qs);
-  //$('#search').hide('slow');
-  //$('#results').show('slow');
-  //$('#results_hdr').show('slow');
-  //return true;
-//})
-function showHide() {
-  //$('#search').hide('slow');
-  //$('.hide_from_view').removeClass('hide_from_view').addClass('show_in_view');
-}
+{{block page_subtitle}}
+  Access specimen records from the database
+{{end}}
 
-function load_record(i) {
-  $('#search').hide('slow');
-  $('#results').hide('slow');
-  $('#record_hdr').show('slow');
-  $('#record').load('specimen/load_record/'+i, function() {
-    $('#recordform').submit(function() {
-      load_record(i);
-    });
-  });
-}
-</script>
+{{block page_content}}
+  <p> enter tables of angiosperms, gynosperms, etc here</p>
+  <p>
+    <a href="{{=URL('specimens','search')}}">search/browse</a>
+    -- <a href="{{=URL('specimens','cabinet')}}">cabinet</a>
+  </p>
 {{end}}

@@ -11,3 +11,7 @@
   color: #191970;
   border-style: solid;
 }
+#map {
+  height: 400px;
+  width: 100%;
+}
