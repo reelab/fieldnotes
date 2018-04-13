@@ -1,0 +1,23 @@
+{{extend 'layout.html'}}
+
+{{block stylesheets}}
+  <link rel="stylesheet" href="{{=URL('static','css/custom_specimens.css')}}"/>
+{{end}}
+
+{{block breadcrumb}}
+  <li class="breadcrumb-item ml-2"><a href="{{=URL('default','index')}}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{=URL('specimens','index')}}">Specimens</a></li>
+  <li class="breadcrumb-item active">Cabinet</li>
+{{end}}
+
+{{block page_title}}
+  Specimens Cabinet
+{{end}}
+
+{{block page_subtitle}}
+  Specimen records saved by current user
+{{end}}
+
+{{block page_content}}
+<p> enter cabinet content here</p>
+{{end}}

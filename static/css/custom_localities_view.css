@@ -1,0 +1,32 @@
+.tab-content {
+  background-color: #CBC5F5;
+  padding: 0.5%;
+}
+
+.locality_dna_icon {
+  font-size: 20px;
+}
+.spec_attributes {
+  font-weight: bold;
+  text-align: center;
+}
+.odd_spec {
+  border: solid #B89AFE;
+  background-color: #E7A9FE;
+}
+.odd_val {
+  border: solid #B89AFE;
+  background-color: #D0BCFE;
+}
+.even_spec {
+  border: solid #CE3175;
+  background-color: #BC70A4;
+}
+.even_val {
+  border: solid  #CE3175;
+  background-color: #F3D6E4;
+}
+#map_tab {
+  height: 500px;
+  width: 600px;
+}

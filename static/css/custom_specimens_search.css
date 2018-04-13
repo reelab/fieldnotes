@@ -1,0 +1,10 @@
+#spec_map {
+  height: 500px;
+  width: 600px;
+}
+#_autocomplete_specimen_family_div,
+  #_autocomplete_specimen_genus_div,
+  #_autocomplete_specimen_species_epithet_div,
+  #_autocomplete_specimen_collector_number_div {
+    position: relative !important;
+  }

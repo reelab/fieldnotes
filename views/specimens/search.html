@@ -1,0 +1,62 @@
+{{extend 'layout.html'}}
+
+{{block stylesheets}}
+  <link rel="stylesheet" href="{{=URL('static','css/custom_specimens_search.css')}}"/>
+{{end}}
+
+{{block breadcrumb}}
+  <li class="breadcrumb-item ml-2"><a href="{{=URL('default','index')}}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{=URL('specimens','index')}}">Specimens</a></li>
+  <li class="breadcrumb-item active">Search</li>
+{{end}}
+
+{{block page_title}}
+  Search For Specimens
+{{end}}
+
+{{block page_subtitle}}
+  Enter criteria to narrow down search.
+{{end}}
+
+{{block page_content}}
+  {{=grid}}
+  {{if request.get_vars:}}
+    <div id="spec_map" class="mx-auto mt-1"></div>
+  {{pass}}
+
+{{end}}
+
+{{block extra_scripts}}
+<script>
+var locations = {{=XML(coordinates)}}
+
+function initMap() {
+
+        var map = new google.maps.Map(document.getElementById('spec_map'), {
+          zoom: 3,
+          center: locations[0]
+        });
+
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        var markers = locations.map(function(location, i) {
+          return new google.maps.Marker({
+            position: location,
+          });
+        });
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      }
+    </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_CQeaSCEOr_9JsVDYOijLvP-6mvFg_-A&callback=initMap">
+    </script>
+
+</script>
+{{end}}
