@@ -48,7 +48,14 @@ def search_function(table, query):
     for k, v in [ (k, v) for k, v in request.vars.items()
                   if (k in table.fields) ]:
         if v:
-            query &= (table[k].like("%"+v+"%"))
+            if (k == "upper_elevation"):
+                #allowing None and 0 data to be shown for now
+                query &= (table[k] < v) | (table[k] == 0) | (table[k] == None)
+            elif (k == "lower_elevation"):
+                #allowing None data to be shown for now
+                query &= (table[k] > v) | (table[k] == None)
+            else:
+                query &= (table[k].like("%"+v+"%"))
     return query
 
 def view():
@@ -56,9 +63,9 @@ def view():
     rec = t(request.args(0))
     rec["place"] = ": ".join(
         [ x for x in (rec["country"], rec["state"], rec["county"], rec["city"]) if x ])
-    ##images_set = db((db.zimage_assoc.image_id==db.zimage.image_id)&(db.zimage_assoc.obj_id==db.locality.id)&(db.zimage_assoc.assoc_type=='L')&(db.locality.id==rec.id))
-    ##images_info = images_set.select(db.zimage.ALL)
-    return dict()#rec=rec), images_info=images_info, images_count=images_set.count())
+    images_set = db((db.zimage_assoc.image_id==db.zimage.image_id)&(db.zimage_assoc.obj_id==db.locality.id)&(db.zimage_assoc.assoc_type=='L')&(db.locality.id==rec.id))
+    images_info = images_set.select(db.zimage.ALL)
+    return dict(rec=rec, images_info=images_info, images_count=images_set.count())
 
 def index():
     t = db.locality

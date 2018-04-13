@@ -11,10 +11,7 @@
 {{end}}
 
 {{block page_title}}
-  <a id="family" href="browse/browse.zpt?group_id=${specimen/group_id}&family=${specimen/family}"
-    title="Browse specimens of {{=rec.family}}">
-    {{=rec.locality_name or ''}}
-  </a>
+  {{=rec.locality_name or ''}}
 {{end}}
 
 {{block page_content}}
@@ -33,18 +30,18 @@
       </li>
     </ul>
     <div class="tab-content clearfix">
-      <div id="details_tab" class="align-middle">
+      <div id="details_tab" class="tab-pane fade show active align-middle">
         <div class="d-flex">
           <div class="col-auto spec_attributes odd_spec">Coordinates</div>
             <div class="col odd_val">{{=rec.latitude_degrees}}&deg;{{=rec.latitude_minutes}}'{{=rec.latitude_seconds}}&#34;{{=rec.north_south}},
-              {{=rec.longitude_degrees}}&deg;{{=rec.longitude_minutes}}'{{=rec.longitude_seconds}}&#34;{{=rec.east_west}} ////
-              {{=rec.lat}}&deg;{{=rec.north_south}}, {{=rec.lng}}&deg;{{=rec.east_west}}
+              {{=rec.longitude_degrees}}&deg;{{=rec.longitude_minutes}}'{{=rec.longitude_seconds}}&#34;{{=rec.east_west}}
             </div>
         </div>
         <div class="d-flex">
           <div class="col-auto spec_attributes even_spec">Elevation</div>
           <div class="col even_val">{{=rec.lower_elevation}}-{{=rec.upper_elevation}} m.</div>
         </div>
+
         <div class="d-flex">
           <div class="col-auto spec_attributes odd_spec">Region</div>
           <div class="col odd_val">{{=rec.place or 'Not available'}}</div>
@@ -57,78 +54,82 @@
           <div class="col-auto spec_attributes odd_spec">Habitat</div>
           <div class="col odd_val">{{=rec.habitat or 'Not available'}}</div>
         </div>
+        {{if images_count > 0:}}
+          <i class="fas fa-camera-retro locality_dna_icon mt-1 text-success"></i>
+          <span> Photographs available </span>
+        {{else:}}
+          <i class="fas fa-camera-retro locality_dna_icon mt-1 text-danger"></i>
+          <span> Photographs NOT available </span>
+        {{pass}}
       </div>
       {{if images_count > 0:}}
-        <i class="fas fa-camera-retro locality_dna_icon mt-1 text-success"></i>
-        <span> Photographs available </span>
-      {{else:}}
-        <i class="fas fa-camera-retro locality_dna_icon mt-1 text-danger"></i>
-        <span> Photographs NOT available </span>
-      {{pass}}
-      
-      {{if images_count > 0:}}
-        <div id="images_tab" class="tab-pane fade d-flex justify-content-around mt-2 text-center">
-          {{image_counter = 0}}
-          {{for item in images_info:}}
-            <div class="col-auto" data-toggle="modal" data-target="#CarouselModal">
-              <a href="#carouselspecimen" data-slide-to="{{=image_counter}}">
-                <img class="img-thumbnail" src="http://107.0.125.182/zimage/thm/{{=item.image_id}}.jpg">
-                {{image_counter = image_counter + 1}}
-                <br>{{=image_counter}}
-              </a>
-            </div>
-          {{pass}}
+        <div id="images_tab" class="tab-pane fade">
+          <div class="row justify-content-around text-center">
+            {{image_counter = 0}}
+            {{for item in images_info:}}
+              <div class="col-auto" data-toggle="modal" data-target="#CarouselModal">
+                <a href="#carouselspecimen" data-slide-to="{{=image_counter}}">
+                  <img class="img-thumbnail" src="http://107.0.125.182/zimage/thm/{{=item.image_id}}.jpg">
+                  {{image_counter = image_counter + 1}}
+                  <br>{{=image_counter}}
+                </a>
+              </div>
+            {{pass}}
+          </div>
           <div class="modal fade" id="CarouselModal">  <!--begin modal window-->
             <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <div class="pull-left">{{=rec.genus or ''}} {{=rec.species_epithet or ''}} Gallery</div>
-                <button type="button" class="close" data-dismiss="modal" title="Close">
-                  <i class="fas fa-window-close menu_icon"></i>
-                </button>
-              </div> <!--end of modal header-->
-              <div class="modal-body">
-                <div id="carouselspecimen" class="carousel slide" data-interval="false" data-ride="carousel">
-                  <ol class="carousel-indicators">
-                    {{for counter in range(0, images_count):}}
-                      <li data-target="#carouselspecimen" data-slide-to="{{=counter}}" class="{{if counter==0:}}active{{pass}}"></li>
-                    {{pass}}
-                  </ol>
-                  <div class="carousel-inner">
-                    {{image_counter = 0}}
-                    {{for item in images_info:}}
-                      <div class="carousel-item text-center {{if image_counter==0:}}active{{pass}}">
-                        {{image_counter = image_counter + 1}}
-                        <img class="img-fluid rounded" src="http://107.0.125.182/zimage/full/{{=item.image_id}}.jpg" alt="image {{=image_counter}}">
-                        <div class="carousel-caption">
-                          <p>{{=item.caption or ''}}</p>
-                          <p>Photographer: {{=item.photographer or 'Not available'}} || Date: {{=item.image_date or 'Not available'}}</p>
+              <div class="modal-content">
+                <div class="modal-header">
+                  <div class="pull-left">{{=rec.locality_name or ''}} Gallery</div>
+                    <button type="button" class="close" data-dismiss="modal" title="Close">
+                      <i class="fas fa-window-close menu_icon"></i>
+                    </button>
+                </div> <!--end of modal header-->
+                <div class="modal-body">
+                    <div id="carouselspecimen" class="carousel slide" data-interval="false" data-ride="carousel">
+                      <ol class="carousel-indicators">
+                        {{for counter in range(0, images_count):}}
+                          <li data-target="#carouselspecimen" data-slide-to="{{=counter}}" class="{{if counter==0:}}active{{pass}}"></li>
+                        {{pass}}
+                      </ol>
+                        <div class="carousel-inner">
+                          {{image_counter = 0}}
+                          {{for item in images_info:}}
+                            <div class="carousel-item text-center {{if image_counter==0:}}active{{pass}}">
+                              {{image_counter = image_counter + 1}}
+                              <img class="img-fluid rounded" src="http://107.0.125.182/zimage/full/{{=item.image_id}}.jpg" alt="image {{=image_counter}}">
+                              <div class="carousel-caption">
+                                <p>{{=item.caption or ''}}</p>
+                                <p>Photographer: {{=item.photographer or 'Not available'}} || Date: {{=item.image_date or 'Not available'}}</p>
+                              </div>
+
+                            </div>
+                          {{pass}}
                         </div>
-
-                      </div>
-                    {{pass}}
-                  </div>
-
-                  <a class="carousel-control-prev" href="#carouselspecimen" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                  </a>
-                  <a class="carousel-control-next" href="#carouselspecimen" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                  </a>
-                </div>
-              </div><!--end modal-body-->
-              <div class="modal-footer align-content-right">
-                <button class="btn close" type="button" data-dismiss="modal">Close</button>
-              </div><!--end modal-footer-->
-            </div><!--end modal-content-->
-          </div><!--end modal-dialoge-->
+                          <a class="carousel-control-prev" href="#carouselspecimen" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                          </a>
+                          <a class="carousel-control-next" href="#carouselspecimen" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                          </a>
+                    </div>
+                  </div><!--end modal-body-->
+                <div class="modal-footer align-content-right">
+                  <button class="btn close" type="button" data-dismiss="modal">Close</button>
+                </div><!--end modal-footer-->
+              </div><!--end modal-content-->
+            </div><!--end modal-dialoge-->
           </div><!--end Modal-->
         </div>
       {{pass}}
       <div id="map_tab" class="mx-auto tab-pane fade"></div>
-     </div> <!--end of tab-content div-->
-   </div> <!--end of tabs_container div-->
+    </div> <!--end of tab-content div-->
+  </div> <!--end of tabs_container div-->
 
+{{end}}
+
+{{block extra_scripts}}
+  {{include 'single_map_script.html'}}
 {{end}}

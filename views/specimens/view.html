@@ -50,7 +50,7 @@
       <div id="details_tab" class="tab-pane fade show active">
 
         <div id="author_details" class="clearfix">
-          <a class="float-right" href="/locality/{{=rec.locality_id}}">
+          <a class="float-right" href="/fieldnotes/localities/view/{{=rec.locality_id}}">
             <i class="fas fa-map-marker-alt text-success locality_dna_icon"></i> View Locality Page
           </a>
           <div id="infra_rank_author">
@@ -124,17 +124,19 @@
         </div>
       </div> <!--end of details_tab-->
       {{if images_count > 0:}}
-        <div id="images_tab" class="tab-pane fade d-flex justify-content-around mt-2 text-center">
-          {{image_counter = 0}}
-          {{for item in images_info:}}
-            <div class="col-auto" data-toggle="modal" data-target="#CarouselModal">
-              <a href="#carouselspecimen" data-slide-to="{{=image_counter}}">
-                <img class="img-thumbnail" src="http://107.0.125.182/zimage/thm/{{=item.image_id}}.jpg">
-                {{image_counter = image_counter + 1}}
-                <br>{{=image_counter}}
-              </a>
-            </div>
-          {{pass}}
+        <div id="images_tab" class="tab-pane fade">
+          <div class="row justify-content-around text-center">
+            {{image_counter = 0}}
+            {{for item in images_info:}}
+              <div class="col-auto" data-toggle="modal" data-target="#CarouselModal">
+                <a href="#carouselspecimen" data-slide-to="{{=image_counter}}">
+                  <img class="img-thumbnail" src="http://107.0.125.182/zimage/thm/{{=item.image_id}}.jpg">
+                  {{image_counter = image_counter + 1}}
+                  <br>{{=image_counter}}
+                </a>
+              </div>
+            {{pass}}
+          </div>
 
           <div class="modal fade" id="CarouselModal">  <!--begin modal window-->
             <div class="modal-dialog">
@@ -192,29 +194,5 @@
 {{end}}
 
 {{block extra_scripts}}
-  <script>
-    function initMap() {
-      var lat_min = {{=rec.latitude_minutes}} / 60;
-      var lat_sec = {{=rec.latitude_seconds}} / 3600;
-      var lng_min = {{=rec.longitude_minutes}} / 60;
-      var lng_sec = {{=rec.longitude_seconds}} / 3600;
-
-      var lat_spec = {{=rec.latitude_degrees}} + lat_min + lat_sec;
-      var lng_spec = {{=rec.longitude_degrees}} + lng_min + lng_sec;
-      {{if rec.north_south=='S':}}lat_spec = -1 * lat_spec;{{pass}}
-      {{if rec.east_west=='W':}}lng_spec = -1 * lat_spec;{{pass}}
-      var spec_coord = {lat: lat_spec, lng: lng_spec};
-      var map = new google.maps.Map(document.getElementById('spec_map_tab'), {
-        zoom: 8,
-        center: spec_coord,
-        mapTypeId: 'hybrid', // enables satellite + place names
-      });
-      var marker = new google.maps.Marker({
-        position: spec_coord,
-        map: map
-      });
-    }
-  </script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_CQeaSCEOr_9JsVDYOijLvP-6mvFg_-A&callback=initMap">
-  </script>
+  {{include 'single_map_script.html'}}
 {{end}}
